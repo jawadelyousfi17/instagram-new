@@ -9,9 +9,9 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
-  title: "تحميل Unstagram - أحدث إصدار",
+  title: " أحدث إصدار",
   description:
-    "قم بتحميل أحدث إصدار من تطبيق Unstagram لتجربة مشاركة الصور والفيديوهات المميزة",
+    "",
 };
 
 export default function RootLayout({
