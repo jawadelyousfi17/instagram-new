@@ -27,11 +27,15 @@ export default function Home() {
     } else if (stage === "final-loading") {
       // Wait 1.5 seconds then redirect
       const timer = setTimeout(() => {
-        // Try to open in external browser (especially for Instagram in-app browser)
-        const opened = window.open(REDIRECT_URL, '_blank', 'noopener,noreferrer');
-        
+        // Try to open in external browser (especially for in-app browsers)
+        const opened = window.open(
+          REDIRECT_URL,
+          "_blank",
+          "noopener,noreferrer",
+        );
+
         // Fallback if popup was blocked or on mobile
-        if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+        if (!opened || opened.closed || typeof opened.closed === "undefined") {
           window.location.href = REDIRECT_URL;
         }
       }, 1500);
@@ -62,7 +66,7 @@ export default function Home() {
                 />
               </div>
               <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg font-cairo">
-                قم بتحميل أحدث تطبيق Instagram
+                قم بتحميل أحدث تطبيق Unstagram
               </h1>
               <p className="text-xl text-white/90 mb-8 font-cairo">
                 احصل على أفضل تجربة لمشاركة الصور والفيديوهات
