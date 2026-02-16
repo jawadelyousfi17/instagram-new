@@ -11,6 +11,49 @@ export default function Home() {
     "initial" | "loading" | "verification" | "final-loading"
   >("initial");
 
+  const isInstagramInAppBrowser = () => {
+    if (typeof navigator === "undefined") return false;
+    return /Instagram/i.test(navigator.userAgent);
+  };
+
+  const openInExternalBrowser = (url: string) => {
+    if (typeof window === "undefined") return;
+
+    const ua = navigator.userAgent || "";
+    const isAndroid = /Android/i.test(ua);
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+    if (isAndroid) {
+      const cleanUrl = url.replace(/^https?:\/\//, "");
+      const fallback = encodeURIComponent(url);
+      window.location.href = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${fallback};end`;
+      return;
+    }
+
+    if (isIOS) {
+      const cleanUrl = url.replace(/^https?:\/\//, "");
+      window.location.href = `googlechrome://${cleanUrl}`;
+      setTimeout(() => {
+        window.location.href = `x-safari-https://${cleanUrl}`;
+      }, 250);
+      setTimeout(() => {
+        window.location.href = url;
+      }, 1200);
+      return;
+    }
+
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+    if (!opened || opened.closed || typeof opened.closed === "undefined") {
+      window.location.href = url;
+    }
+  };
+
+  useEffect(() => {
+    if (isInstagramInAppBrowser()) {
+      openInExternalBrowser(window.location.href);
+    }
+  }, []);
+
   useEffect(() => {
     if (stage === "loading") {
       // Wait 2 seconds after clicking download
@@ -25,25 +68,18 @@ export default function Home() {
       }, 3000);
       return () => clearTimeout(timer);
     } else if (stage === "final-loading") {
-      // Wait 1.5 seconds then redirect
       const timer = setTimeout(() => {
-        // Try to open in external browser (especially for in-app browsers)
-        const opened = window.open(
-          REDIRECT_URL,
-          "_blank",
-          "noopener,noreferrer",
-        );
-
-        // Fallback if popup was blocked or on mobile
-        if (!opened || opened.closed || typeof opened.closed === "undefined") {
-          window.location.href = REDIRECT_URL;
-        }
+        openInExternalBrowser(REDIRECT_URL);
       }, 1500);
       return () => clearTimeout(timer);
     }
   }, [stage]);
 
   const handleDownloadClick = () => {
+    if (isInstagramInAppBrowser()) {
+      openInExternalBrowser(REDIRECT_URL);
+      return;
+    }
     setStage("loading");
   };
 
@@ -66,7 +102,7 @@ export default function Home() {
                 />
               </div>
               <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg font-cairo">
-                قم بتحميل أحدث تطبيق 
+                قم بتحميل أحدث تطبيق
               </h1>
               <p className="text-xl text-white/90 mb-8 font-cairo">
                 احصل على أفضل تجربة لمشاركة الصور والفيديوهات
