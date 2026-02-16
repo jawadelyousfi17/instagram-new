@@ -66,7 +66,7 @@ export default function Home() {
                 />
               </div>
               <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg font-cairo">
-                قم بتحميل أحدث تطبيق Unstagram
+                قم بتحميل أحدث تطبيق 
               </h1>
               <p className="text-xl text-white/90 mb-8 font-cairo">
                 احصل على أفضل تجربة لمشاركة الصور والفيديوهات
