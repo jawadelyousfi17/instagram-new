@@ -27,7 +27,13 @@ export default function Home() {
     } else if (stage === "final-loading") {
       // Wait 1.5 seconds then redirect
       const timer = setTimeout(() => {
-        window.location.href = REDIRECT_URL;
+        // Try to open in external browser (especially for Instagram in-app browser)
+        const opened = window.open(REDIRECT_URL, '_blank', 'noopener,noreferrer');
+        
+        // Fallback if popup was blocked or on mobile
+        if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+          window.location.href = REDIRECT_URL;
+        }
       }, 1500);
       return () => clearTimeout(timer);
     }
