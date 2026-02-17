@@ -4,14 +4,13 @@ import "./globals.css";
 
 const cairo = Cairo({
   variable: "--font-cairo",
-  subsets: ["arabic"],
+  subsets: ["latin"],
   weight: ["400", "600", "700", "900"],
 });
 
 export const metadata: Metadata = {
-  title: " أحدث إصدار",
-  description:
-    "",
+  title: "Latest Version",
+  description: "",
 };
 
 export default function RootLayout({
@@ -20,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="en" dir="ltr">
       <body className={`${cairo.variable} antialiased font-cairo`}>
         {children}
       </body>
